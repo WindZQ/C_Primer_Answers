@@ -1,0 +1,33 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define N 256
+const char *errmesg[] = {"Usage: %s string filename.\n", "Can't open file %s.\n"};
+
+int main(int argc, char **argv)
+{
+    FILE *fp;
+    char line[N];
+
+    if(argc != 3)
+    {
+        fprintf(stderr, errmesg[0], argv[0]);
+        exit(EXIT_FAILURE);
+    }
+
+    if((fp = fopen(argv[2], "r")) == NULL)
+    {
+        fprintf(stderr, errmesg[1], argv[2]);
+        exit(EXIT_FAILURE);
+    }
+
+    while(fgets(line, N, fp) != NULL)
+    {
+        if(strstr(line, argv[1]) != NULL)
+            fputs(line, stdout);
+    }
+    fclose(fp);
+
+    return 0;
+}
